@@ -4,7 +4,7 @@ import random
 win_height = 500
 win_width = 700
 
-COLOR_RED = 255, 0 , 0
+COLOR_RED = 255, 0, 0
 COLOR_WHITE = 255, 255, 255
 COLOR_BLACK = 0, 0, 0
 
@@ -20,12 +20,10 @@ class GameSprite(sprite.Sprite):
         self.rect.x = player_x
         self.rect.y = player_y
 
-    # function for output player
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
 
 class Player(GameSprite):
-    # function for moving the player
     def update(self):
         keys = key.get_pressed()
         if keys[K_LEFT] and self.rect.x:
@@ -37,64 +35,109 @@ class Player(GameSprite):
         if keys[K_DOWN] and self.rect.y < win_height - 40:
             self.rect.y += self.speed
 
-# basic setting for window(size of window, window caption)
+class Wall(sprite.Sprite):
+    def __init__(self, color_1, color_2, color_3, wall_x, wall_y, wall_width, wall_height):
+        super().__init__()
+        self.color_1 = color_1
+        self.color_2 = color_2
+        self.color_3 = color_3
+        self.width = wall_width
+        self.height = wall_height
+        self.image = Surface((self.width, self.height))
+        self.image.fill((color_1, color_2, color_3))
+        self.rect = self.image.get_rect()
+        self.rect.x = wall_x
+        self.rect.y = wall_y
+
+    def draw_wall(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
 window = display.set_mode((win_width, win_height))
 display.set_caption("Multi Game")
 
-# create and settings background
 bg = transform.scale(image.load("background.jpg"), (700, 500))
 
-# create and settings for player and win point
-player = Player("player.png", 325, 225, 40, 40, 5)
+player = Player("player.png", 20, 325, 40, 40, 5)
+win_point = GameSprite("treasure.png", 580, 420, 60, 60, 0)
 
-#sprites for treasure - win point
-win_point = GameSprite("treasure.png", 580, 420, 60, 60, 0 )
+w1 = Wall(154, 205, 50, 100, 20, 450, 10)
+w2 = Wall(154, 205, 50, 100, 480, 350, 10)
+w3 = Wall(154, 205, 50, 100, 20, 10, 380)
+w4 = Wall(154, 205, 50, 200, 130, 10, 350)
+w5 = Wall(154, 205, 50, 450, 130, 10, 360)
+w6 = Wall(154, 205, 50, 300, 20, 10, 350)
+w7 = Wall(154, 205, 50, 390, 120, 130, 10)
 
-
-# sprites for snake (activate snake game by number 5)
 apple = GameSprite("apple.png", 100, 100, 40, 40, 0)
 
-# game settings
+MENU = 0
+MAZE_1LVL = 1
+MAZE_2LVL = 2
+SNAKE = 3
+
+current_state = MENU
+
 score = 0
 game = True
-finish = False
 clock = time.Clock()
 FPS = 60
+# ...
 
-# game 
 while game:
-    # keys and keyboard
     for e in event.get():
-        # here we implement exit from the game
         if e.type == QUIT:
             game = False
 
-    if not finish:
-        # Screen cleaning
-        window.fill((0, 0, 0))
-    
-        # screen output
-        window.blit(bg, (0, 0))
+    window.fill((0, 0, 0))
+    window.blit(bg, (0, 0))
 
+    if current_state == MENU:
+        keys = key.get_pressed()
+
+        if keys[K_1] and current_state != MAZE_1LVL:
+            current_state = MAZE_1LVL
+        elif keys[K_2] and current_state != MAZE_2LVL:
+            current_state = MAZE_2LVL
+        elif keys[K_3] and current_state != SNAKE:
+            current_state = SNAKE
+
+    elif current_state == MAZE_1LVL:
+        # print("Гра у лабіринт - рівень 1")
+        player.update()
+        w1.draw_wall()
+        w2.draw_wall()
+        w3.draw_wall()
+        w4.draw_wall()
+        w5.draw_wall()
+        w6.draw_wall()
+        w7.draw_wall()
+        win_point.reset()  # Виводимо скарб
+        player.reset()
+        if sprite.collide_rect(player, w1) or sprite.collide_rect(player, w2) or sprite.collide_rect(player, w3) or sprite.collide_rect(player, w4) or sprite.collide_rect(player, w5) or sprite.collide_rect(player, w6) or sprite.collide_rect(player, w7):
+            player.rect.x = 20
+            player.rect.y = 325
+        elif sprite.collide_rect(player, win_point):
+            current_state = MENU  # Повертаємося в меню
+
+    elif current_state == MAZE_2LVL:
+        # print("Гра у лабіринт - рівень 2")
+        # Додайте код для другого рівня лабіринту, включаючи вивід win_point
+        pass
+        # ...
+
+    elif current_state == SNAKE:
+        # print("Гра змійка")
+        window.blit(apple.image, (apple.rect.x, apple.rect.y))
         player.update()
         player.reset()
-
-        win_point.reset()
-
-        window.blit(apple.image, (apple.rect.x, apple.rect.y))  # output apple
-
-        # check collision player and apple
         if player.rect.colliderect(apple.rect):
             apple.rect.x = random.randint(10, win_width - 10)
             apple.rect.y = random.randint(40, win_height - 30)
             score += 1
-            
-        # output score
+
         score_text = font1.render("Рахунок: " + str(score), 1, (COLOR_BLACK))
         window.blit(score_text, (10, 5))
- 
+        
+    display.flip()
+    clock.tick(FPS)
 
-
-        display.flip()
-
-    clock.tick(FPS) # you can use time.delay(50) 
