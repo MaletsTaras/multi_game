@@ -58,7 +58,10 @@ display.set_caption("Multi Game")
 bg = transform.scale(image.load("background.jpg"), (700, 500))
 
 player = Player("player.png", 20, 325, 40, 40, 5)
-win_point = GameSprite("treasure.png", 580, 420, 60, 60, 0)
+BASIC_X = 20 # base position x for the player
+BASIC_Y = 325 # base position y for the player
+BASIC_RECT = BASIC_X, BASIC_Y
+win_point = GameSprite("treasure.png", 580, 410, 80, 80, 0)
 
 w1 = Wall(154, 205, 50, 100, 20, 450, 10)
 w2 = Wall(154, 205, 50, 100, 480, 350, 10)
@@ -81,7 +84,6 @@ score = 0
 game = True
 clock = time.Clock()
 FPS = 60
-# ...
 
 while game:
     for e in event.get():
@@ -96,14 +98,16 @@ while game:
 
         if keys[K_1] and current_state != MAZE_1LVL:
             current_state = MAZE_1LVL
-        elif keys[K_2] and current_state != MAZE_2LVL:
-            current_state = MAZE_2LVL
-        elif keys[K_3] and current_state != SNAKE:
+        # elif keys[K_2] and current_state != MAZE_2LVL:
+        #     current_state = MAZE_2LVL
+        elif keys[K_2] and current_state != SNAKE:
             current_state = SNAKE
 
     elif current_state == MAZE_1LVL:
         # print("Гра у лабіринт - рівень 1")
+
         player.update()
+
         w1.draw_wall()
         w2.draw_wall()
         w3.draw_wall()
@@ -111,25 +115,34 @@ while game:
         w5.draw_wall()
         w6.draw_wall()
         w7.draw_wall()
+
         win_point.reset()  # Виводимо скарб
+
         player.reset()
+
         if sprite.collide_rect(player, w1) or sprite.collide_rect(player, w2) or sprite.collide_rect(player, w3) or sprite.collide_rect(player, w4) or sprite.collide_rect(player, w5) or sprite.collide_rect(player, w6) or sprite.collide_rect(player, w7):
-            player.rect.x = 20
-            player.rect.y = 325
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
         elif sprite.collide_rect(player, win_point):
             current_state = MENU  # Повертаємося в меню
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
 
-    elif current_state == MAZE_2LVL:
-        # print("Гра у лабіринт - рівень 2")
-        # Додайте код для другого рівня лабіринту, включаючи вивід win_point
-        pass
-        # ...
+    # elif current_state == MAZE_2LVL:
+    #     # print("Гра у лабіринт - рівень 2")
+    #     # Додайте код для другого рівня лабіринту, включаючи вивід win_point
+    #     pass
+    #     # ...
 
     elif current_state == SNAKE:
         # print("Гра змійка")
+
         window.blit(apple.image, (apple.rect.x, apple.rect.y))
+
         player.update()
+
         player.reset()
+
         if player.rect.colliderect(apple.rect):
             apple.rect.x = random.randint(10, win_width - 10)
             apple.rect.y = random.randint(40, win_height - 30)
@@ -137,6 +150,15 @@ while game:
 
         score_text = font1.render("Рахунок: " + str(score), 1, (COLOR_BLACK))
         window.blit(score_text, (10, 5))
+
+        keys = key.get_pressed()
+        if keys[K_0] and current_state != MENU:
+            current_state = MENU
+
+            score = 0
+
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
         
     display.flip()
     clock.tick(FPS)
