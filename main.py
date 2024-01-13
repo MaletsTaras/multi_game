@@ -98,9 +98,9 @@ while game:
 
         if keys[K_1] and current_state != MAZE_1LVL:
             current_state = MAZE_1LVL
-        # elif keys[K_2] and current_state != MAZE_2LVL:
-        #     current_state = MAZE_2LVL
-        elif keys[K_2] and current_state != SNAKE:
+        elif keys[K_2] and current_state != MAZE_2LVL:
+            current_state = MAZE_2LVL
+        elif keys[K_3] and current_state != SNAKE:
             current_state = SNAKE
 
     elif current_state == MAZE_1LVL:
@@ -120,20 +120,60 @@ while game:
 
         player.reset()
 
+        # defeat
         if sprite.collide_rect(player, w1) or sprite.collide_rect(player, w2) or sprite.collide_rect(player, w3) or sprite.collide_rect(player, w4) or sprite.collide_rect(player, w5) or sprite.collide_rect(player, w6) or sprite.collide_rect(player, w7):
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
+
+        # win
         elif sprite.collide_rect(player, win_point):
             current_state = MENU  # Повертаємося в меню
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
 
-    # elif current_state == MAZE_2LVL:
-    #     # print("Гра у лабіринт - рівень 2")
-    #     # Додайте код для другого рівня лабіринту, включаючи вивід win_point
-    #     pass
-    #     # ...
+        if keys[K_0] and current_state != MENU:
+            current_state = MENU
 
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+
+
+    elif current_state == MAZE_2LVL:
+        # print("Гра у лабіринт - рівень 2")
+        # Додайте код для другого рівня лабіринту, включаючи вивід win_point
+        
+        player.update()
+
+        w1.draw_wall()
+        w2.draw_wall()
+        w3.draw_wall()
+        w4.draw_wall()
+        w5.draw_wall()
+        w6.draw_wall()
+        w7.draw_wall()
+
+        win_point.reset()  # Виводимо скарб
+
+        player.reset()
+
+        # defeat
+        if sprite.collide_rect(player, w1) or sprite.collide_rect(player, w2) or sprite.collide_rect(player, w3) or sprite.collide_rect(player, w4) or sprite.collide_rect(player, w5) or sprite.collide_rect(player, w6) or sprite.collide_rect(player, w7):
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+        # win
+        elif sprite.collide_rect(player, win_point):
+            current_state = MENU  # Повертаємося в меню
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+        if keys[K_0] and current_state != MENU:
+            current_state = MENU
+
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+        
     elif current_state == SNAKE:
         # print("Гра змійка")
 
