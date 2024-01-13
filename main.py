@@ -68,7 +68,7 @@ w2 = Wall(154, 205, 50, 100, 480, 350, 10)
 w3 = Wall(154, 205, 50, 100, 20, 10, 380)
 w4 = Wall(154, 205, 50, 200, 130, 10, 350)
 w5 = Wall(154, 205, 50, 450, 130, 10, 360)
-w6 = Wall(154, 205, 50, 300, 20, 10, 350)
+w6 = Wall(15, 205, 50, 300, 20, 10, 350)
 w7 = Wall(154, 205, 50, 390, 120, 130, 10)
 
 apple = GameSprite("apple.png", 100, 100, 40, 40, 0)
@@ -145,12 +145,20 @@ while game:
         
         player.update()
 
+        
         w1.draw_wall()
+
         w2.draw_wall()
         w3.draw_wall()
+
+        w4.rect.y = 35
         w4.draw_wall()
+
         w5.draw_wall()
+
+        w6.rect.y = 140
         w6.draw_wall()
+
         w7.draw_wall()
 
         win_point.reset()  # Виводимо скарб
