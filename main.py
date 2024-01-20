@@ -256,8 +256,8 @@ while game:
         player.reset()
 
         if player.rect.colliderect(apple.rect):
-            apple.rect.x = random.randint(10, win_width - 10)
-            apple.rect.y = random.randint(40, win_height - 30)
+            apple.rect.x = random.randint(10, win_width - 20)
+            apple.rect.y = random.randint(40, win_height - 35)
             score += 1
 
         score_text = font1.render("Рахунок: " + str(score), 1, (COLOR_BLACK))
