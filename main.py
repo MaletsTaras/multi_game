@@ -7,9 +7,6 @@
 #
 
 
-
-
-
 from pygame import *
 import random
 
@@ -200,6 +197,11 @@ while game:
 
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
+
+            w4.rect.y = 130
+            w6.rect.y = 20
+
+        
     
     elif current_state == MAZE_3LVL:
         # print("Гра у лабіринт - рівень 3")
@@ -239,6 +241,8 @@ while game:
 
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
+
+            w5.rect.y = 130
 
 
 
