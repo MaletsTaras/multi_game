@@ -1,3 +1,15 @@
+# 1 - перший рівень лабіринту
+# 2 - другий рівень лабіринту
+# 3 - змійка
+# 0 - вихід в меню
+#
+#
+#
+
+
+
+
+
 from pygame import *
 import random
 
@@ -68,7 +80,7 @@ w2 = Wall(154, 205, 50, 100, 480, 350, 10)
 w3 = Wall(154, 205, 50, 100, 20, 10, 380)
 w4 = Wall(154, 205, 50, 200, 130, 10, 350)
 w5 = Wall(154, 205, 50, 450, 130, 10, 360)
-w6 = Wall(15, 205, 50, 300, 20, 10, 350)
+w6 = Wall(154, 205, 50, 300, 20, 10, 350)
 w7 = Wall(154, 205, 50, 390, 120, 130, 10)
 
 apple = GameSprite("apple.png", 100, 100, 40, 40, 0)
@@ -76,7 +88,8 @@ apple = GameSprite("apple.png", 100, 100, 40, 40, 0)
 MENU = 0
 MAZE_1LVL = 1
 MAZE_2LVL = 2
-SNAKE = 3
+MAZE_3LVL = 3
+SNAKE = 4
 
 current_state = MENU
 
@@ -100,7 +113,9 @@ while game:
             current_state = MAZE_1LVL
         elif keys[K_2] and current_state != MAZE_2LVL:
             current_state = MAZE_2LVL
-        elif keys[K_3] and current_state != SNAKE:
+        elif keys[K_3] and current_state != MAZE_3LVL:
+            current_state = MAZE_3LVL
+        elif keys[K_4] and current_state != SNAKE:
             current_state = SNAKE
 
     elif current_state == MAZE_1LVL:
@@ -131,6 +146,8 @@ while game:
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
 
+        # реалізація виходу в меню
+        keys = key.get_pressed()
         if keys[K_0] and current_state != MENU:
             current_state = MENU
 
@@ -176,12 +193,55 @@ while game:
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
 
+        # реалізація виходу в меню
+        keys = key.get_pressed()
         if keys[K_0] and current_state != MENU:
             current_state = MENU
 
             player.rect.x = BASIC_X # 20
             player.rect.y = BASIC_Y # 325
-        
+    
+    elif current_state == MAZE_3LVL:
+        # print("Гра у лабіринт - рівень 3")
+
+        player.update()
+
+        w1.draw_wall()
+        w2.draw_wall()
+        w3.draw_wall()
+        w4.draw_wall()
+
+        w5.rect.y = 50
+        w5.draw_wall()
+
+        w6.draw_wall()
+        # w7.draw_wall()
+
+        win_point.reset()  # Виводимо скарб
+
+        player.reset()
+
+        # defeat
+        if sprite.collide_rect(player, w1) or sprite.collide_rect(player, w2) or sprite.collide_rect(player, w3) or sprite.collide_rect(player, w4) or sprite.collide_rect(player, w5) or sprite.collide_rect(player, w6):
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+        # win
+        elif sprite.collide_rect(player, win_point):
+            current_state = MENU  # Повертаємося в меню
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+        # реалізація виходу в меню
+        keys = key.get_pressed()
+        if keys[K_0] and current_state != MENU:
+            current_state = MENU
+
+            player.rect.x = BASIC_X # 20
+            player.rect.y = BASIC_Y # 325
+
+
+
     elif current_state == SNAKE:
         # print("Гра змійка")
 
@@ -199,6 +259,7 @@ while game:
         score_text = font1.render("Рахунок: " + str(score), 1, (COLOR_BLACK))
         window.blit(score_text, (10, 5))
 
+        # реалізація виходу в меню
         keys = key.get_pressed()
         if keys[K_0] and current_state != MENU:
             current_state = MENU
