@@ -5,6 +5,8 @@ Multi Game is game with 2 levels of maze and simple snake game in programming la
 
 2 - second level maze
 
-3 - snake game
+3 - third level maze
+
+4 - snake game 
 
 0 - menu
