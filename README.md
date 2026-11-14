@@ -1,5 +1,5 @@
 # multi_game
-Multi Game is game with 2 levels of maze and simple snake game in programming laguage Python.
+Multi Game have 3 levels of maze and simple snake game in Python.
 
 1 - first level maze
 
