@@ -3,10 +3,6 @@
 # 3 - третій рівень
 # 4 - змійка
 # 0 - вихід в меню
-#
-#
-#
-
 
 from pygame import *
 import random
@@ -21,6 +17,7 @@ COLOR_BLACK = 0, 0, 0
 font.init()
 font1 = font.SysFont("Arial", 36)
 
+# головний клас для створення гравця
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, size_x, size_y, player_speed):
         sprite.Sprite.__init__(self)
@@ -32,7 +29,8 @@ class GameSprite(sprite.Sprite):
 
     def reset(self):
         window.blit(self.image, (self.rect.x, self.rect.y))
-
+        
+# клас для створення гравця
 class Player(GameSprite):
     def update(self):
         keys = key.get_pressed()
@@ -44,8 +42,8 @@ class Player(GameSprite):
             self.rect.y -= self.speed
         if keys[K_DOWN] and self.rect.y < win_height - 40:
             self.rect.y += self.speed
-
-class Wall(sprite.Sprite):
+# клас для створення стін
+class Wall(sprite.Sprite): 
     def __init__(self, color_1, color_2, color_3, wall_x, wall_y, wall_width, wall_height):
         super().__init__()
         self.color_1 = color_1
@@ -73,6 +71,7 @@ BASIC_Y = 325 # base position y for the player
 BASIC_RECT = BASIC_X, BASIC_Y
 win_point = GameSprite("treasure.png", 580, 410, 80, 80, 0)
 
+# координати стін
 w1 = Wall(154, 205, 50, 100, 20, 450, 10)
 w2 = Wall(154, 205, 50, 100, 480, 350, 10)
 w3 = Wall(154, 205, 50, 100, 20, 10, 380)
@@ -155,8 +154,7 @@ while game:
 
 
     elif current_state == MAZE_2LVL:
-        # print("Гра у лабіринт - рівень 2")
-        # Додайте код для другого рівня лабіринту, включаючи вивід win_point
+        # print("Гра у лабіринт - рівень 2") / для тесту
         
         player.update()
 
@@ -205,7 +203,7 @@ while game:
         
     
     elif current_state == MAZE_3LVL:
-        # print("Гра у лабіринт - рівень 3")
+        # print("Гра у лабіринт - рівень 3") / для тесту
 
         player.update()
 
@@ -248,7 +246,7 @@ while game:
 
 
     elif current_state == SNAKE:
-        # print("Гра змійка")
+        # print("Гра змійка") / для тесту
 
         window.blit(apple.image, (apple.rect.x, apple.rect.y))
 
@@ -276,4 +274,3 @@ while game:
         
     display.flip()
     clock.tick(FPS)
-
