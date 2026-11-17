@@ -1,5 +1,5 @@
 # multi_game
-Multi Game have 3 levels of maze and simple snake game in Python.
+Multi Game have 3 levels of maze and simple snake game in Python. Works fully in python and wroted without using ANY AI. 
 
 1 - first level maze
 
